@@ -72,15 +72,14 @@ subprojects {
 
     apply plugin: "maven-publish"
     publishing {
-        String repoUrl = property("nexus.release.url")
-        String pubVersion = project.version
         repositories {
             maven {
-                name "nexus"
-                url repoUrl
+                name "oss"
+                def ossBaseUrl = "https://oss.sonatype.org/content/repositories"
+                url = project.hasProperty("release") ? "$ossBaseUrl/releases" : "$ossBaseUrl/snapshots"
                 credentials {
-                    username property("nexus.username")
-                    password property("nexus.password")
+                    username property("maven2.username")
+                    password property("maven2.password")
                 }
             }
         }
@@ -88,8 +87,38 @@ subprojects {
             mavenJava(MavenPublication) {
                 from components.java
 
+                if (project.hasProperty("release")) {
+                    version = project.getVersion()
+                } else {
+                    version = project.getVersion() + "-SNAPSHOT"
+                }
+
                 artifact sourcesJar
                 artifact protoZip
+
+                pom {
+                    name = 'TensorFlow4j'
+                    description = 'A Java Library for Protobuf in TensorFlow and TensorFlow-Serving'
+                    url = 'https://github.com/YuanWenqing/tensorflow4j'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'yuanwq'
+                            name = 'YuanWenqing'
+                            email = 'ywq8876@163.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com:YuanWenqing/tensorflow4j.git'
+                        developerConnection = 'scm:git:ssh://github.com:YuanWenqing/tensorflow4j.git'
+                        url = 'https://github.com/YuanWenqing/tensorflow4j'
+                    }
+                }
             }
         }
     }
@@ -97,6 +126,9 @@ subprojects {
         doLast {
             def pub = publishing.publications.mavenJava
             println "artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}"
+            for (repo in publishing.repositories) {
+                println "upload to ${repo.url}"
+            }
         }
     }
     publishToMavenLocal {
