@@ -147,10 +147,10 @@ subprojects {
     }
     task('local').dependsOn(publishToMavenLocal)
 
-//    apply plugin: "signing"  // generate a signature file for each artifact
-//    signing {
-//        sign publishing.publications.mavenJava
-//    }
+    apply plugin: "signing"  // generate a signature file for each artifact
+    signing {
+        sign publishing.publications.mavenJava
+    }
 
 }
 
