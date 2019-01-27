@@ -9,7 +9,7 @@ buildscript {
 }
 
 subprojects {
-    group = 'com.codemeans.tfproto'
+    group = 'com.codemeans.tensorflow4j'
     version = '1.12.0'
 
     repositories {
@@ -114,16 +114,16 @@ subprojects {
 
 }
 
-project(":tensorflow") {
+project(":tensorflow-proto") {
     dependencies {
         api("com.google.protobuf:protobuf-java:$protobufJavaVersion")
         api("io.grpc:grpc-protobuf:$grpcVersion")
         api("io.grpc:grpc-stub:$grpcVersion")
     }
 }
-project(":serving") {
+project(":serving-proto") {
     dependencies {
-        protobuf(project(":tensorflow"))
+        protobuf(project(":tensorflow-proto"))
 
         api("com.google.protobuf:protobuf-java:$protobufJavaVersion")
         api("io.grpc:grpc-protobuf:$grpcVersion")

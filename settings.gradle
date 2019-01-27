@@ -1,4 +1,4 @@
-rootProject.name = 'tensorflow-proto'
+rootProject.name = 'tensorflow4j'
 
-include "tensorflow"
-include "serving"
+include "tensorflow-proto"
+include "serving-proto"

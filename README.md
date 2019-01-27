@@ -12,8 +12,8 @@ checkout the latest version(or any other version you want),
 and then run:
 
 ~~~bash
-python sync_proto.py /path/to/tensorflow_project tensorflow
-python sync_proto.py /path/to/tensorflow_serving_project serving
+python sync_proto.py /path/to/tensorflow_project tensorflow-proto
+python sync_proto.py /path/to/tensorflow_serving_project serving-proto
 ~~~
 
 NOTE: a little BUGFIX must be done to `tensorflow/compiler/tf2xla/host_compute_metadata.proto`,
@@ -53,7 +53,8 @@ or
 gradle publish
 ~~~
 
-NOTE: protoc compiling for `serving` depends on protobuf in `tensorflow`, thus <strong>serving.jar contains all in tensorflow.jar</strong>
+NOTE: protoc compiling for `serving-proto` depends on protobuf in `tensorflow-proto`,
+thus <strong>serving-proto.jar contains all in tensorflow-proto.jar</strong>
 
 ## Version
 
@@ -61,7 +62,7 @@ Current version of TensorFlow and TensorFlow-Servng are both 1.12.0.
 
 If you want to build library for another version, you MUST:
 
-* checkout tensorflow and tensorflow-serving source of exact version you want, then sync all proto files
+* checkout TensorFlow and TensorFlow-Serving source of exact version you want, then sync all proto files
 * change version setting in `build.gradle` for publishing somewhere
 
  
