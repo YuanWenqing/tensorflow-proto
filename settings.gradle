@@ -1,0 +1,4 @@
+rootProject.name = 'tensorflow-proto'
+
+include "tensorflow"
+include "serving"

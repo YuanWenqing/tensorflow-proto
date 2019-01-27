@@ -1,0 +1,132 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufPluginVersion"
+    }
+}
+
+subprojects {
+    group = 'com.codemeans.tfproto'
+    version = '1.12.0'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    apply plugin: "java"
+    apply plugin: 'java-library'
+
+    // protobuf
+    apply plugin: "com.google.protobuf"
+    protobuf {
+        generatedFilesBaseDir = "$projectDir/gen/"
+        plugins {
+            grpc {
+                artifact = "io.grpc:protoc-gen-grpc-java:$grpcProtocPluginVersion"
+            }
+        }
+        generateProtoTasks {
+            ofSourceSet('main')
+            all().each { task ->
+                task.plugins {
+                    grpc {
+                        outputSubDir = "java"
+                    }
+                }
+            }
+        }
+    }
+    clean {
+        delete protobuf.generatedFilesBaseDir
+    }
+    sourceSets {
+        main.java.srcDir("${protobuf.generatedFilesBaseDir}/main/java")
+    }
+    apply plugin: "idea"
+    idea {
+        module {
+            // mark proto directory as source root
+            sourceDirs += sourceSets.main.proto.sourceDirectories
+        }
+    }
+
+    // artifacts
+    jar << {
+        println "jar: ${archivePath}"
+    }
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        from sourceSets.main.allJava
+        classifier = 'sources'
+        doLast {
+            println "sources: ${archivePath}"
+        }
+    }
+    task('protoZip', type: Zip) {
+        from sourceSets.main.proto
+        classifier = 'proto'
+    }
+
+    apply plugin: "maven-publish"
+    publishing {
+        String repoUrl = property("nexus.release.url")
+        String pubVersion = project.version
+        repositories {
+            maven {
+                name "nexus"
+                url repoUrl
+                credentials {
+                    username property("nexus.username")
+                    password property("nexus.password")
+                }
+            }
+        }
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                artifact sourcesJar
+                artifact protoZip
+            }
+        }
+    }
+    publish {
+        doLast {
+            def pub = publishing.publications.mavenJava
+            println "artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}"
+        }
+    }
+    publishToMavenLocal {
+        doLast {
+            def pub = publishing.publications.mavenJava
+            println "artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}"
+        }
+    }
+    task('local').dependsOn(publishToMavenLocal)
+
+//    apply plugin: "signing"  // generate a signature file for each artifact
+//    signing {
+//        sign publishing.publications.mavenJava
+//    }
+
+}
+
+project(":tensorflow") {
+    dependencies {
+        api("com.google.protobuf:protobuf-java:$protobufJavaVersion")
+        api("io.grpc:grpc-protobuf:$grpcVersion")
+        api("io.grpc:grpc-stub:$grpcVersion")
+    }
+}
+project(":serving") {
+    dependencies {
+        protobuf(project(":tensorflow"))
+
+        api("com.google.protobuf:protobuf-java:$protobufJavaVersion")
+        api("io.grpc:grpc-protobuf:$grpcVersion")
+        api("io.grpc:grpc-stub:$grpcVersion")
+    }
+}
