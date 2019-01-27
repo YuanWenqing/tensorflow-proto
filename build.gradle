@@ -65,6 +65,13 @@ subprojects {
             println "sources: ${archivePath}"
         }
     }
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+        doLast {
+            println "sources: ${archivePath}"
+        }
+    }
     task('protoZip', type: Zip) {
         from sourceSets.main.proto
         classifier = 'proto'
@@ -76,7 +83,7 @@ subprojects {
             maven {
                 name "oss"
                 def ossBaseUrl = "https://oss.sonatype.org/content/repositories"
-                url = project.hasProperty("release") ? "$ossBaseUrl/releases" : "$ossBaseUrl/snapshots"
+                url = project.hasProperty("release") ? "https://oss.sonatype.org/service/local/staging/deploy/maven2" : "$ossBaseUrl/snapshots"
                 credentials {
                     username property("maven2.username")
                     password property("maven2.password")
@@ -94,6 +101,7 @@ subprojects {
                 }
 
                 artifact sourcesJar
+                artifact javadocJar
                 artifact protoZip
 
                 pom {

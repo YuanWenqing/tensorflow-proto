@@ -49,7 +49,7 @@ gradle local
 or
 
 ~~~bash
-# publish to nexus
+# config maven publishing and publish to nexus
 gradle publish
 ~~~
 
@@ -63,6 +63,6 @@ Current version of TensorFlow and TensorFlow-Servng are both 1.12.0.
 If you want to build library for another version, you MUST:
 
 * checkout TensorFlow and TensorFlow-Serving source of exact version you want, then sync all proto files
-* change version setting in `build.gradle` for publishing somewhere
+* change version and publish setting in `build.gradle` for publishing somewhere
 
  
