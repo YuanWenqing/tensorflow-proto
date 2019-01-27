@@ -9,7 +9,7 @@ buildscript {
 }
 
 subprojects {
-    group = 'com.codemeans.tensorflow4j'
+    group = 'xyz.codemeans.tensorflow4j'
     version = '1.12.0'
 
     repositories {
