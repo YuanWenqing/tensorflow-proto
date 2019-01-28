@@ -4,6 +4,42 @@ Since [TensorFlow](https://github.com/tensorflow/tensorflow) and [TensorFlow-Ser
 do not support official jars for their protobuf files right now, 
 we create this project to do it just for convenience and sharing.
 
+## Usage
+
+`tensorflow-proto` contains and compiles all protobuf files in TensorFlow,
+and `serving-proto` does that for TensorFlow-Serving.
+Since compiling of `serving-proto` imports protobuf from `tensorflow-proto`,
+actually `serving-proto` contains all that `tensorflow-proto` has.
+Therefore `serving-proto` is the only library you need when you want to do something with TensorFlow-Serving. 
+
+
+maven:
+
+~~~xml
+<dependencies>
+    <dependency>
+        <groupId>xyz.codemeans.tensorflow4j</groupId>
+        <artifactId>tensorflow-proto</artifactId>
+        <version>1.12.0</version>
+    </dependency>
+
+    <dependency>
+        <groupId>xyz.codemeans.tensorflow4j</groupId>
+        <artifactId>serving-proto</artifactId>
+        <version>1.12.0</version>
+    </dependency>
+</dependencies>
+
+~~~
+
+gradle:
+
+~~~groovy
+implementation 'xyz.codemeans.tensorflow4j:tensorflow-proto:1.12.0'
+
+implementation 'xyz.codemeans.tensorflow4j:serving-proto:1.12.0'
+~~~
+
 
 ## Sync Protobuf Files
 
@@ -53,8 +89,6 @@ or
 gradle publish
 ~~~
 
-NOTE: protoc compiling for `serving-proto` depends on protobuf in `tensorflow-proto`,
-thus <strong>serving-proto.jar contains all in tensorflow-proto.jar</strong>
 
 ## Version
 
