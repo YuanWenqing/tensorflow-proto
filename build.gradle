@@ -105,7 +105,7 @@ subprojects {
                 artifact protoZip
 
                 pom {
-                    name = 'TensorFlow4j: Protobuf Library In TensorFlow and TensorFlow-Serving'
+                    name = 'TensorFlow4j: Java Library For Protobuf In TensorFlow and TensorFlow-Serving'
                     description = 'A Java Library for Protobuf in TensorFlow and TensorFlow-Serving'
                     url = 'https://github.com/YuanWenqing/tensorflow4j'
                     licenses {
