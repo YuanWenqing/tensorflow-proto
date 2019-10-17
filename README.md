@@ -43,13 +43,18 @@ implementation 'xyz.codemeans.tensorflow4j:serving-proto:1.12.0'
 
 ## Sync Protobuf Files
 
-Clone those two projects, 
-checkout the latest version(or any other version you want), 
+Clone [TensorFlow](https://github.com/tensorflow/tensorflow) and [TensorFlow-Serving](https://github.com/tensorflow/serving) , checkout the latest version(or any other version you want), 
+
+~~~shell
+git clone -b 1.15.0 git@github.com:tensorflow/serving.git tensorflow-projects/serving
+git clone -b 1.15.0 git@github.com:tensorflow/tensorflow.git tensorflow-projects/tensorflow
+~~~
+
 and then run:
 
 ~~~bash
-python sync_proto.py /path/to/tensorflow_project tensorflow-proto
-python sync_proto.py /path/to/tensorflow_serving_project serving-proto
+python sync_proto.py tensorflow-projects/tensorflow tensorflow-proto
+python sync_proto.py tensorflow-projects/serving serving-proto
 ~~~
 
 NOTE: a little BUGFIX must be done to `tensorflow/compiler/tf2xla/host_compute_metadata.proto`,

@@ -5,6 +5,7 @@ gen
 logs
 nohup.*
 install
+tensorflow-projects
 
 ### STS ###
 .apt_generated
